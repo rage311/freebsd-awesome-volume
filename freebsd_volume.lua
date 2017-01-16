@@ -53,7 +53,7 @@ local previousvol = nil
 
 -- toggle mute and store previous volume to return to when unmuting
 function volumelayout.toggle_mute()
-  if (tonumber(volval) > 0) then
+  if (volval > 0) then
     previousvol = volval
     awful.util.spawn(terminal .. " -e mixer vol 0:0")
   else
@@ -78,11 +78,14 @@ end
 -- read volume from mixer and set widget accordingly
 function volumelayout.get_vol()
   -- TODO: use GIO to do asynchronously for awesome 3.5
-  local vol = awful.util.pread(
-    "/usr/sbin/mixer vol | /usr/bin/awk '{print $7}' | /usr/bin/cut -d: -f1")
+  local vol = tonumber(
+    awful.util.pread(
+      "/usr/sbin/mixer vol | /usr/bin/awk '{print $7}' | /usr/bin/cut -d: -f1"
+    )
+  )
   volumewidget:set_value(vol)
   volval = vol
-  if (tonumber(volval) > 0) then
+  if (volval > 0) then
     volumewidget:set_background_color(BG_COLOR_NORMAL)
   else
     volumewidget:set_background_color(BG_COLOR_MUTE)
