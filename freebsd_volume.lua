@@ -53,20 +53,20 @@ local previousvol = nil
 
 -- toggle mute and store previous volume to return to when unmuting
 function volumelayout.toggle_mute()
-	if (tonumber(volval) > 0) then
-		previousvol = volval
+  if (tonumber(volval) > 0) then
+    previousvol = volval
     awful.util.spawn(terminal .. " -e mixer vol 0:0")
-	else
+  else
     awful.util.spawn(
       terminal .. " -e mixer vol " .. previousvol .. ":" .. previousvol)
-	end
-	volumelayout.get_vol()
+  end
+  volumelayout.get_vol()
 end
 
 -- incrementally decrease volume
 function volumelayout.down()
   awful.util.spawn(terminal .. " -e mixer vol -5:-5")
-	volumelayout.get_vol()
+  volumelayout.get_vol()
 end
 
 -- incrementally increase volume
